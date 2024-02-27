@@ -14,16 +14,16 @@ Then install refer to https://github.com/facebookresearch/maskrcnn-benchmark/blo
 
 
 ## Details of change
-In setup.py, the line 'cmdclass ...' is revised to cmdclass={"build_ext": torch.utils.cpp_extension.BuildExtension.with_options(use_ninja=False)},  
-Delete: #include <THC/THC.h>  
-#include <THC/THCDeviceUtils.cuh> --> #include <ATen/cuda/DeviceUtils.cuh>  
-#include <THC/THCAtomics.cuh> --> #include <ATen/cuda/Atomic.cuh>  
-THCCeilDiv --> at::ceil_div, and add #include <ATen/ceil_div.h>  
-Delete the line: THCState *state = at::globalContext().lazyInitCUDA(); // TODO replace with getTHCState  
-THCudaMalloc --> c10::cuda::CUDACachingAllocator::raw_alloc(size), delete "state"  
-THCudaFree --> c10::cuda::CUDACachingAllocator::raw_delete(ptr), delete "state"  
-THCudaCheck --> C10_CUDA_CHECK  
-AT_CHECK --> TORCH_CHECK  
+- In setup.py, the line 'cmdclass ...' is revised to cmdclass={"build_ext": torch.utils.cpp_extension.BuildExtension.with_options(use_ninja=False)},  
+- Delete: #include <THC/THC.h>  
+- #include <THC/THCDeviceUtils.cuh> --> #include <ATen/cuda/DeviceUtils.cuh>  
+- #include <THC/THCAtomics.cuh> --> #include <ATen/cuda/Atomic.cuh>  
+- THCCeilDiv --> at::ceil_div, and add #include <ATen/ceil_div.h>  
+- Delete the line: THCState *state = at::globalContext().lazyInitCUDA(); // TODO replace with getTHCState  
+- THCudaMalloc --> c10::cuda::CUDACachingAllocator::raw_alloc(size), delete "state"  
+- THCudaFree --> c10::cuda::CUDACachingAllocator::raw_delete(ptr), delete "state"  
+- THCudaCheck --> C10_CUDA_CHECK  
+- AT_CHECK --> TORCH_CHECK  
 
 ## Reference
 https://discuss.pytorch.org/t/question-about-thc-thc-h/147145/8  
